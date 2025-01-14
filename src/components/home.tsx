@@ -7,6 +7,7 @@ import {
   useLaunchParams,
   useCloudStorage,
 } from "@telegram-apps/sdk-react";
+import { init, openLink } from "@telegram-apps/sdk";
 import { connect } from "../utils/phantom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -26,7 +27,7 @@ export function Homepage() {
   const handleAuthenticate = () => {
     if (!initData?.user?.id) return;
     let url = connect(initData?.user?.id);
-    window.location.href = url;
+    openLink(url);
   };
 
   useEffect(() => {
@@ -51,6 +52,10 @@ export function Homepage() {
       setAuthStatus("failure");
     }
   }, [launchParams, initData?.user?.id, user, router]);
+
+  useEffect(() => {
+    init();
+  }, []);
 
   if (loading) {
     return <AuthLoader />;
